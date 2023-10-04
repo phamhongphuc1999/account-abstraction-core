@@ -1,24 +1,32 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AbiCoder, BytesLike, Contract, concat, ethers, keccak256, getBytes, toUtf8Bytes } from 'ethers';
 import { toRpcSig } from '@ethereumjs/util';
-
-import { AccountAbi } from './abis/account.js';
+import { UserOperationStruct } from '@peter-present/user-operation-type';
+import {
+  AbiCoder,
+  BytesLike,
+  Contract,
+  concat,
+  ethers,
+  getBytes,
+  keccak256,
+  toUtf8Bytes,
+} from 'ethers';
 import { AccountFactoryAbi } from './abis/account-factory.js';
+import { AccountAbi } from './abis/account.js';
 import { ADDRESSES, DEPLOY_SALTS_MVP } from './constants.js';
-import { HDKeyring, Signatures, Types as KeyringTypes } from './keyring/index.js';
+import { AccountPackageErrors } from './errors.js';
+import { HDKeyring, Types as KeyringTypes, Signatures } from './keyring/index.js';
 import { Account, AccountState, AccountType, WalletInfo, WalletStrategy } from './types.js';
 import { getEVMAddressFromPublicKey } from './utils.js';
-import { AccountPackageErrors } from './errors.js';
-import { UserOperationStruct } from '@ziden-dev/user-operation-type';
 
 export * from './constants.js';
 export * from './errors.js';
-export * from './types.js';
-export * from './utils.js';
 export * from './keyring/index.js';
 export * from './kms/index.js';
+export * from './types.js';
+export * from './utils.js';
 
 // eslint-disable-next-line import/no-default-export
 export default class AccountPackage {
@@ -122,7 +130,10 @@ export default class AccountPackage {
    *
    * @param password
    */
-  public async unlockWallet(password: string, state: KeyringTypes.SerializedHdKeyringState): Promise<any> {}
+  public async unlockWallet(
+    password: string,
+    state: KeyringTypes.SerializedHdKeyringState,
+  ): Promise<any> {}
 
   /**
    * Lock wallet and erase secrets from memory
@@ -255,7 +266,8 @@ export default class AccountPackage {
     const publicKey = await this.getPublicKeyForAccount(account);
     // FIXME hard-coded network's data
     const userOpHash = this.getUserOpHash(userOp, ADDRESSES.sepolia.EntryPoint, 11155111);
-    const msg = Buffer.from('\x19Ethereum Signed Message:\n32').toString('hex') + userOpHash.slice(2);
+    const msg =
+      Buffer.from('\x19Ethereum Signed Message:\n32').toString('hex') + userOpHash.slice(2);
     const sig = await this.#keyring.sign(getBytes('0x' + msg), publicKey);
     return toRpcSig(sig.v || BigInt(0), sig.r, sig.s);
   }
@@ -276,7 +288,18 @@ export default class AccountPackage {
   packUserOp(op: UserOperationStruct, forSignature = true): string {
     if (forSignature) {
       return AbiCoder.defaultAbiCoder().encode(
-        ['address', 'uint256', 'bytes32', 'bytes32', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'bytes32'],
+        [
+          'address',
+          'uint256',
+          'bytes32',
+          'bytes32',
+          'uint256',
+          'uint256',
+          'uint256',
+          'uint256',
+          'uint256',
+          'bytes32',
+        ],
         [
           op.sender,
           op.nonce,
@@ -325,17 +348,28 @@ export default class AccountPackage {
 
   getUserOpHash(op: UserOperationStruct, entryPoint: string, chainId: number): string {
     const userOpHash = keccak256(this.packUserOp(op, true));
-    const enc = AbiCoder.defaultAbiCoder().encode(['bytes32', 'address', 'uint256'], [userOpHash, entryPoint, chainId]);
+    const enc = AbiCoder.defaultAbiCoder().encode(
+      ['bytes32', 'address', 'uint256'],
+      [userOpHash, entryPoint, chainId],
+    );
     return keccak256(enc);
   }
 
   async getPublicKeyForAccount(account: Account): Promise<KeyringTypes.PublicKey> {
     switch (account.type) {
       case AccountType.EVM: {
-        const accountContract = new Contract(account.address, JSON.stringify(AccountAbi), this.provider);
-        const deployedOwner = (await this.isAccountDeployed(account)) ? await accountContract.owner() : '';
+        const accountContract = new Contract(
+          account.address,
+          JSON.stringify(AccountAbi),
+          this.provider,
+        );
+        const deployedOwner = (await this.isAccountDeployed(account))
+          ? await accountContract.owner()
+          : '';
 
-        const publicKeys = await this.#keyring.getPublicKeys(KeyringTypes.SignatureScheme.ECDSA_SECP256K1);
+        const publicKeys = await this.#keyring.getPublicKeys(
+          KeyringTypes.SignatureScheme.ECDSA_SECP256K1,
+        );
         const publicKey = await Promise.all(
           publicKeys.map(async (pubKey) => {
             const ownerAddress = getEVMAddressFromPublicKey(pubKey.key);
@@ -344,13 +378,18 @@ export default class AccountPackage {
                 ownerAddress,
                 BigInt(DEPLOY_SALTS_MVP.SIMPLE_ACCOUNT),
               );
-              if (account.address.toString().toLowerCase() == accountAddress.toString().toLowerCase()) return pubKey;
+              if (
+                account.address.toString().toLowerCase() == accountAddress.toString().toLowerCase()
+              )
+                return pubKey;
             } else {
-              if (ownerAddress.toString().toLowerCase() == deployedOwner.toString().toLowerCase()) return pubKey;
+              if (ownerAddress.toString().toLowerCase() == deployedOwner.toString().toLowerCase())
+                return pubKey;
             }
           }),
         );
-        if (publicKey.length == 0 || publicKey[0] == undefined) throw new Error('Missing key in keyring');
+        if (publicKey.length == 0 || publicKey[0] == undefined)
+          throw new Error('Missing key in keyring');
         return publicKey[0];
       }
       default: {

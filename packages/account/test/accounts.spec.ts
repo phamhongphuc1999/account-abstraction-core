@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { fromRpcSig } from '@ethereumjs/util';
 import { keccak_256 } from '@noble/hashes/sha3';
-import { UserOperationStruct } from '@ziden-dev/user-operation-type';
+import { UserOperationStruct } from '@peter-present/user-operation-type';
 import { toUtf8Bytes } from 'ethers';
 import { assert, describe, it } from 'vitest';
 import AccountPackage from '../src';
@@ -30,11 +30,17 @@ describe('Account Package', async () => {
       const sig = await ACCOUNT_PACKAGE.signMessage(message, account);
 
       assert.equal(
-        await Signatures.verify(sig, toUtf8Bytes(message), await ACCOUNT_PACKAGE.getPublicKeyForAccount(account)),
+        await Signatures.verify(
+          sig,
+          toUtf8Bytes(message),
+          await ACCOUNT_PACKAGE.getPublicKeyForAccount(account),
+        ),
         true,
       );
 
-      const mnemonic = new TextDecoder().decode(new Uint8Array(walletInfo.state!.keyringState.mnemonic));
+      const mnemonic = new TextDecoder().decode(
+        new Uint8Array(walletInfo.state!.keyringState.mnemonic),
+      );
       assert.isOk(mnemonic);
     });
 
@@ -83,7 +89,8 @@ describe('Account Package', async () => {
         11155111,
       );
 
-      const msg = Buffer.from('\x19Ethereum Signed Message:\n32').toString('hex') + userOpHash.slice(2);
+      const msg =
+        Buffer.from('\x19Ethereum Signed Message:\n32').toString('hex') + userOpHash.slice(2);
       const msgHash = keccak_256(Buffer.from(msg));
       assert.isOk(msgHash);
 

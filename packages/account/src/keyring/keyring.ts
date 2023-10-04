@@ -25,7 +25,11 @@ export abstract class Keyring<State> {
   abstract sign(message: Uint8Array, publicKey: PublicKey): Promise<Signature>;
 
   // Verify signature
-  abstract verify(signature: Signature, message: Uint8Array, publicKey: PublicKey): Promise<boolean>;
+  abstract verify(
+    signature: Signature,
+    message: Uint8Array,
+    publicKey: PublicKey,
+  ): Promise<boolean>;
 
   // Encrypt arbitrary message
   abstract encrypt?(message: string, publicKey: PublicKey): Promise<string>;

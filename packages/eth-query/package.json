@@ -1,8 +1,8 @@
 {
-  "name": "@peter-present/user-operation-type",
+  "name": "@peter-present/eth-query",
   "private": false,
-  "version": "1.0.1",
-  "description": "user operation type",
+  "version": "1.0.0",
+  "description": "simple eth and account abstraction query",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -10,10 +10,6 @@
     ".": {
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    },
-    "./eth-error": {
-      "import": "./dist/esm/eth-errors/index.js",
-      "require": "./dist/cjs/eth-errors/index.js"
     }
   },
   "files": [
@@ -27,12 +23,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/phamhongphuc1999/account-abstraction-core"
+    "url": "git+https://github.com/phamhongphuc1999/account-abstraction-core.git"
   },
-  "keywords": [
-    "user-operation",
-    "ethers"
-  ],
+  "keywords": ["user-operation", "eth", "rpc"],
   "author": "Phạm Hồng Phúc",
   "license": "ISC",
   "bugs": {
@@ -40,6 +33,6 @@
   },
   "homepage": "https://github.com/phamhongphuc1999/account-abstraction-core#readme",
   "dependencies": {
-    "ethers": "^6.6.1"
+    "@peter-present/user-operation-type": "1.0.1"
   }
 }

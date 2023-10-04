@@ -1,0 +1,11 @@
+{
+  "extends": "../../config/tsconfig.prod.esm.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist/esm",
+    "composite": true,
+    "module": "esnext"
+  },
+  "include": ["src/*.ts", "src/**/*.ts", "src/**/*.json"]
+}

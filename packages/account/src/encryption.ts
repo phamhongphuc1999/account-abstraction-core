@@ -12,14 +12,21 @@ const STRING_ENCODING = 'utf-8';
  * @param exportable - Should the derived key be exportable.
  * @returns A CryptoKey for encryption and decryption.
  */
-export async function keyFromPassword(password: string, salt = '', exportable = false): Promise<CryptoKey> {
+export async function keyFromPassword(
+  password: string,
+  salt = '',
+  exportable = false,
+): Promise<CryptoKey> {
   const passBuffer = Buffer.from(password, STRING_ENCODING);
   const saltBuffer = salt == '' ? generateSalt() : Buffer.from(salt, 'base64');
 
-  const key = await global.crypto.subtle.importKey('raw', passBuffer, { name: DERIVED_KEY_ALGORITHM }, false, [
-    'deriveBits',
-    'deriveKey',
-  ]);
+  const key = await global.crypto.subtle.importKey(
+    'raw',
+    passBuffer,
+    { name: DERIVED_KEY_ALGORITHM },
+    false,
+    ['deriveBits', 'deriveKey'],
+  );
 
   const derivedKey = await global.crypto.subtle.deriveKey(
     {

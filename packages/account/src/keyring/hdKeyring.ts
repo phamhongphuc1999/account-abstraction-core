@@ -1,10 +1,16 @@
 import { HDKey } from '@scure/bip32';
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english.js';
-import { getPublicKey, sign, verify } from './signature.js';
-import { Keyring } from './keyring.js';
 import { HDKeyringErrors } from './errors.js';
-import { PrivateKey, PublicKey, SerializedHdKeyringState, Signature, SignatureScheme } from './types.js';
+import { Keyring } from './keyring.js';
+import { getPublicKey, sign, verify } from './signature.js';
+import {
+  PrivateKey,
+  PublicKey,
+  SerializedHdKeyringState,
+  Signature,
+  SignatureScheme,
+} from './types.js';
 
 // eslint-disable-next-line quotes
 const hdPathString = "m/44'/60'/0'/0";
@@ -120,7 +126,11 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
     return Promise.resolve(sign(message, privateKey, publicKey.scheme));
   }
 
-  public async verify(signature: Signature, message: Uint8Array, publicKey: PublicKey): Promise<boolean> {
+  public async verify(
+    signature: Signature,
+    message: Uint8Array,
+    publicKey: PublicKey,
+  ): Promise<boolean> {
     return Promise.resolve(verify(signature, message, publicKey));
   }
 
@@ -174,7 +184,8 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
     const privKey =
       this.#derivedKeys.map((priv) => {
         const pub = getPublicKey(priv, publicKey.scheme);
-        if (Buffer.from(pub).toString('hex') == Buffer.from(publicKey.key).toString('hex')) return priv;
+        if (Buffer.from(pub).toString('hex') == Buffer.from(publicKey.key).toString('hex'))
+          return priv;
       })[0] ?? undefined;
     if (privKey === undefined) throw new Error(HDKeyringErrors.PublicKeyNotFound);
     return privKey;

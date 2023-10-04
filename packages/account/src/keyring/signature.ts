@@ -1,8 +1,8 @@
-import { keccak_256 } from '@noble/hashes/sha3';
-import { schnorr, secp256k1 } from '@noble/curves/secp256k1';
-import { jubjub } from '@noble/curves/jubjub';
 import { mod } from '@noble/curves/abstract/modular';
 import { bytesToNumberBE, numberToHexUnpadded } from '@noble/curves/abstract/utils';
+import { jubjub } from '@noble/curves/jubjub';
+import { schnorr, secp256k1 } from '@noble/curves/secp256k1';
+import { keccak_256 } from '@noble/hashes/sha3';
 import { PrivateKey, PublicKey, Signature, SignatureScheme } from './types.js';
 
 export function getPublicKey(privateKey: Uint8Array | bigint, scheme: SignatureScheme): Uint8Array {
@@ -22,7 +22,11 @@ export function getPublicKey(privateKey: Uint8Array | bigint, scheme: SignatureS
   }
 }
 
-export function sign(message: Uint8Array, privateKey: PrivateKey, scheme: SignatureScheme): Signature {
+export function sign(
+  message: Uint8Array,
+  privateKey: PrivateKey,
+  scheme: SignatureScheme,
+): Signature {
   let normalizedPrivKey: bigint;
   if (privateKey instanceof Uint8Array) privateKey = bytesToNumberBE(privateKey);
   switch (scheme) {
