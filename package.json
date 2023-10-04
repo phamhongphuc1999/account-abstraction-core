@@ -1,0 +1,50 @@
+{
+  "name": "account-abstraction-core",
+  "private": false,
+  "workspaces": [
+    "packages/*"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "eslint": "eslint . --ext .ts",
+    "postinstall": "npm run build --workspaces"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
+    "@typescript-eslint/eslint-plugin": "5.59.6",
+    "@vitest/browser": "^0.32.2",
+    "@vitest/coverage-v8": "^0.32.2",
+    "@vitest/ui": "^0.32.2",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
+    "ts-node": "10.9.1",
+    "typescript": "5.0.4",
+    "vitest": "0.32.2",
+    "webdriverio": "^8.10.7"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --config ./.eslintrc-staged.cjs --cache --fix",
+    "*.{json,yml,md}": [
+      "prettier --write"
+    ]
+  }
+}

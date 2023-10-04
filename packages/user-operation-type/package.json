@@ -1,0 +1,41 @@
+{
+  "name": "@peter-present/user-operation-type",
+  "private": false,
+  "version": "1.0.0",
+  "description": "user operation type",
+  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "../../config/scripts/ts-build.sh",
+    "clean": "../../config/scripts/clear-package.sh",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phamhongphuc1999/account-abstraction-core"
+  },
+  "keywords": [
+    "user-operation",
+    "ethers"
+  ],
+  "author": "Phạm Hồng Phúc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phamhongphuc1999/account-abstraction-core/issues"
+  },
+  "homepage": "https://github.com/phamhongphuc1999/account-abstraction-core#readme",
+  "dependencies": {
+    "ethers": "^6.6.1"
+  }
+}
