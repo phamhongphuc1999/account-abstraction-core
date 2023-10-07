@@ -32,7 +32,7 @@ module.exports = {
     'import/no-absolute-path': 'error',
     'import/no-anonymous-default-export': 'error',
     'import/no-cycle': 'off',
-    // 'import/no-default-export': ['error'],
+    'import/no-default-export': ['error'],
     'import/no-deprecated': 'off',
     'import/no-duplicates': 'error',
     'import/no-dynamic-require': 'off',

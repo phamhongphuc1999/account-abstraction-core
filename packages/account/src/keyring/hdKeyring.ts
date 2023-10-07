@@ -1,16 +1,16 @@
-import { HDKey } from '@scure/bip32';
-import * as bip39 from '@scure/bip39';
-import { wordlist } from '@scure/bip39/wordlists/english.js';
-import { HDKeyringErrors } from './errors.js';
-import { Keyring } from './keyring.js';
-import { getPublicKey, sign, verify } from './signature.js';
 import {
   PrivateKey,
   PublicKey,
   SerializedHdKeyringState,
   Signature,
   SignatureScheme,
-} from './types.js';
+} from '@peter-present/user-operation-type';
+import { HDKey } from '@scure/bip32';
+import * as bip39 from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english.js';
+import { HDKeyringErrors } from './errors.js';
+import { Keyring } from './keyring.js';
+import { getPublicKey, sign, verify } from './signature.js';
 
 // eslint-disable-next-line quotes
 const hdPathString = "m/44'/60'/0'/0";

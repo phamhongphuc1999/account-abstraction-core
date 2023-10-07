@@ -1,4 +1,9 @@
-import { PrivateKey, PublicKey, Signature, SignatureScheme } from './types.js';
+import {
+  PrivateKey,
+  PublicKey,
+  Signature,
+  SignatureScheme,
+} from '@peter-present/user-operation-type';
 
 export abstract class Keyring<State> {
   readonly type!: string;

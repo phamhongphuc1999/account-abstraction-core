@@ -8,7 +8,7 @@ import {
   ResponseRpcMiddlewareReturn,
 } from '@peter-present/user-operation-type';
 
-export default class JsonRpcMiddleware {
+export class JsonRpcMiddleware {
   static runRequestMiddleware<Params>(
     request: JsonRpcRequest<Params>,
     middleware: RequestRpcMiddleware<Params>,

@@ -9,7 +9,7 @@ import {
   ethErrors,
   normalizeUrlFromParsed,
 } from '@peter-present/user-operation-type';
-import JsonRpcMiddleware from './json-rpc-middleware.js';
+import { JsonRpcMiddleware } from './json-rpc-middleware.js';
 
 const fetch = global.fetch;
 
@@ -33,7 +33,7 @@ interface Request {
 export type BlockData = string | string[];
 export type Block = Record<string, BlockData>;
 
-export default class JsonRpcEngine {
+export class JsonRpcEngine {
   private rpcUrl: URL;
   private requestMiddleware: Array<RequestRpcMiddleware<unknown>>;
   private responseMiddleware: Array<ResponseRpcMiddleware<unknown, unknown>>;

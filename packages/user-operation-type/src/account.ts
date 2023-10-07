@@ -1,4 +1,4 @@
-import { Types as KeyringTypes } from './keyring/index.js';
+import { SerializedHdKeyringState } from './keyring.js';
 
 export enum WalletStrategy {
   SIMPLE = 'Simple Wallet',
@@ -22,6 +22,6 @@ export type Account = {
 };
 
 export type AccountState = {
-  keyringState: KeyringTypes.SerializedHdKeyringState;
+  keyringState: SerializedHdKeyringState;
   accounts?: Account[];
 };

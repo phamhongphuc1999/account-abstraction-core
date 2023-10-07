@@ -8,4 +8,5 @@ My account abstraction packages
 | :-------------------------------------------------------------------- | :------------------------------------------ |
 | [@peter-present/account](./packages/account/)                         | Package aim to creating account abstraction |
 | [@peter-present/eth-query](./packages/eth-query/)                     | Simple eth and account abstraction query    |
+| [@peter-present/user-operation](./packages/user-operation/)           | Package for build user operation            |
 | [@peter-present/user-operation-type](./packages/user-operation-type/) | Account abstraction type                    |

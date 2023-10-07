@@ -18,7 +18,7 @@ import {
 } from '@peter-present/user-operation-type';
 import { BaseEthQuery } from './base-eth-query.js';
 
-export default class EthQuery extends BaseEthQuery {
+export class EthQuery extends BaseEthQuery {
   constructor(rpcUrl: string, options?: OptionType) {
     super(rpcUrl, options);
   }

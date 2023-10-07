@@ -1,8 +1,7 @@
 {
-  "name": "@peter-present/eth-query",
-  "private": false,
-  "version": "1.0.1",
-  "description": "simple eth and account abstraction query",
+  "name": "@peter-present/user-operation",
+  "version": "1.0.0",
+  "description": "package for build user operation",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -25,7 +24,10 @@
     "type": "git",
     "url": "git+https://github.com/phamhongphuc1999/account-abstraction-core.git"
   },
-  "keywords": ["user-operation", "eth", "rpc"],
+  "keywords": [
+    "user-operation",
+    "rpc"
+  ],
   "author": "Phạm Hồng Phúc",
   "license": "ISC",
   "bugs": {
@@ -33,6 +35,9 @@
   },
   "homepage": "https://github.com/phamhongphuc1999/account-abstraction-core#readme",
   "dependencies": {
-    "@peter-present/user-operation-type": "1.0.2"
+    "@peter-present/user-operation-type": "1.0.2",
+    "bignumber.js": "^9.1.2",
+    "ethers": "^6.6.1",
+    "gas-price-oracle": "^0.5.2"
   }
 }

@@ -2,7 +2,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { toRpcSig } from '@ethereumjs/util';
-import { UserOperationStruct } from '@peter-present/user-operation-type';
+import {
+  Account,
+  AccountState,
+  AccountType,
+  PrivateKey,
+  PublicKey,
+  SerializedHdKeyringState,
+  Signature,
+  SignatureScheme,
+  UserOperationStruct,
+  WalletInfo,
+  WalletStrategy,
+} from '@peter-present/user-operation-type';
 import {
   AbiCoder,
   BytesLike,
@@ -17,15 +29,13 @@ import { AccountFactoryAbi } from './abis/account-factory.js';
 import { AccountAbi } from './abis/account.js';
 import { ADDRESSES, DEPLOY_SALTS_MVP } from './constants.js';
 import { AccountPackageErrors } from './errors.js';
-import { HDKeyring, Types as KeyringTypes, Signatures } from './keyring/index.js';
-import { Account, AccountState, AccountType, WalletInfo, WalletStrategy } from './types.js';
+import { HDKeyring, Signatures } from './keyring/index.js';
 import { getEVMAddressFromPublicKey } from './utils.js';
 
 export * from './constants.js';
 export * from './errors.js';
 export * from './keyring/index.js';
 export * from './kms/index.js';
-export * from './types.js';
 export * from './utils.js';
 
 // eslint-disable-next-line import/no-default-export
@@ -130,10 +140,7 @@ export default class AccountPackage {
    *
    * @param password
    */
-  public async unlockWallet(
-    password: string,
-    state: KeyringTypes.SerializedHdKeyringState,
-  ): Promise<any> {}
+  public async unlockWallet(password: string, state: SerializedHdKeyringState): Promise<any> {}
 
   /**
    * Lock wallet and erase secrets from memory
@@ -162,10 +169,10 @@ export default class AccountPackage {
 
     switch (type) {
       case AccountType.EVM: {
-        const privateKey: KeyringTypes.PrivateKey = (await this.#keyring.addKeys(1))[0];
-        const publicKey: KeyringTypes.PublicKey = {
-          key: Signatures.getPublicKey(privateKey, KeyringTypes.SignatureScheme.ECDSA_SECP256K1),
-          scheme: KeyringTypes.SignatureScheme.ECDSA_SECP256K1,
+        const privateKey: PrivateKey = (await this.#keyring.addKeys(1))[0];
+        const publicKey: PublicKey = {
+          key: Signatures.getPublicKey(privateKey, SignatureScheme.ECDSA_SECP256K1),
+          scheme: SignatureScheme.ECDSA_SECP256K1,
         };
         const ownerAddress = getEVMAddressFromPublicKey(publicKey.key);
 
@@ -253,7 +260,7 @@ export default class AccountPackage {
    *
    * @param options
    */
-  public async signMessage(message: BytesLike, account: Account): Promise<KeyringTypes.Signature> {
+  public async signMessage(message: BytesLike, account: Account): Promise<Signature> {
     if (!(message instanceof Uint8Array)) message = toUtf8Bytes(message);
     const publicKey = await this.getPublicKeyForAccount(account);
     return this.#keyring.sign(message, publicKey);
@@ -355,7 +362,7 @@ export default class AccountPackage {
     return keccak256(enc);
   }
 
-  async getPublicKeyForAccount(account: Account): Promise<KeyringTypes.PublicKey> {
+  async getPublicKeyForAccount(account: Account): Promise<PublicKey> {
     switch (account.type) {
       case AccountType.EVM: {
         const accountContract = new Contract(
@@ -367,9 +374,7 @@ export default class AccountPackage {
           ? await accountContract.owner()
           : '';
 
-        const publicKeys = await this.#keyring.getPublicKeys(
-          KeyringTypes.SignatureScheme.ECDSA_SECP256K1,
-        );
+        const publicKeys = await this.#keyring.getPublicKeys(SignatureScheme.ECDSA_SECP256K1);
         const publicKey = await Promise.all(
           publicKeys.map(async (pubKey) => {
             const ownerAddress = getEVMAddressFromPublicKey(pubKey.key);

@@ -5,7 +5,7 @@ import {
   RequestRpcMiddleware,
   ResponseRpcMiddleware,
 } from '@peter-present/user-operation-type';
-import JsonRpcEngine from './json-rpc-engine.js';
+import { JsonRpcEngine } from './json-rpc-engine.js';
 
 export class BaseEthQuery {
   public rpcUrl: string;

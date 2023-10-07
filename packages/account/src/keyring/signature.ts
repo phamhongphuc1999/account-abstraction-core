@@ -3,7 +3,12 @@ import { bytesToNumberBE, numberToHexUnpadded } from '@noble/curves/abstract/uti
 import { jubjub } from '@noble/curves/jubjub';
 import { schnorr, secp256k1 } from '@noble/curves/secp256k1';
 import { keccak_256 } from '@noble/hashes/sha3';
-import { PrivateKey, PublicKey, Signature, SignatureScheme } from './types.js';
+import {
+  PrivateKey,
+  PublicKey,
+  Signature,
+  SignatureScheme,
+} from '@peter-present/user-operation-type';
 
 export function getPublicKey(privateKey: Uint8Array | bigint, scheme: SignatureScheme): Uint8Array {
   let normalizedPrivKey: bigint;
