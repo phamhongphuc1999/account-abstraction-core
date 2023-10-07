@@ -33,6 +33,6 @@
   },
   "homepage": "https://github.com/phamhongphuc1999/account-abstraction-core#readme",
   "dependencies": {
-    "@peter-present/user-operation-type": "1.0.2"
+    "@peter-present/user-operation-type": "1.0.4"
   }
 }

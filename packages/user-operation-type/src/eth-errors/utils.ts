@@ -2,8 +2,7 @@
 import { Json } from '../query.js';
 import { hasProperty, isPlainObject } from '../utils.js';
 import { EthereumRpcError, SerializedEthereumRpcError } from './classes.js';
-import { errorCodes, errorValues } from './error-constants.js';
-import { ethErrors } from './errors.js';
+import { errorCodes, errorValues, ethErrors } from './errors.js';
 
 const FALLBACK_ERROR_CODE = errorCodes.rpc.internal;
 const FALLBACK_MESSAGE = 'Unspecified error message. This is a bug, please report it.';

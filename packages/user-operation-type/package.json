@@ -1,7 +1,7 @@
 {
   "name": "@peter-present/user-operation-type",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "user operation type",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -11,9 +11,41 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./eth-error": {
+    "./eth-errors": {
       "import": "./dist/esm/eth-errors/index.js",
       "require": "./dist/cjs/eth-errors/index.js"
+    },
+    "./account": {
+      "import": "./dist/esm/account.js",
+      "require": "./dist/cjs/account.js"
+    },
+    "./constants": {
+      "import": "./dist/esm/constants.js",
+      "require": "./dist/cjs/constants.js"
+    },
+    "./error": {
+      "import": "./dist/esm/error.js",
+      "require": "./dist/cjs/error.js"
+    },
+    "./eth": {
+      "import": "./dist/esm/eth.js",
+      "require": "./dist/cjs/eth.js"
+    },
+    "./keyring": {
+      "import": "./dist/esm/keyring.js",
+      "require": "./dist/cjs/keyring.js"
+    },
+    "./query": {
+      "import": "./dist/esm/query.js",
+      "require": "./dist/cjs/query.js"
+    },
+    "./user-operation": {
+      "import": "./dist/esm/user-operation.js",
+      "require": "./dist/cjs/user-operation.js"
+    },
+    "./utils": {
+      "import": "./dist/esm/utils.js",
+      "require": "./dist/cjs/utils.js"
     }
   },
   "files": [
