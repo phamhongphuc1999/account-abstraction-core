@@ -80,21 +80,13 @@ export default class AccountPackage {
    */
   public async createKeyring(password: string, info: WalletInfo): Promise<WalletInfo> {
     // FIXME validate password
-    if (!password || !password.length) {
-      throw new Error(AccountPackageErrors.MissingPassword);
-    }
+    if (!password || !password.length) throw new Error(AccountPackageErrors.MissingPassword);
     this.#password = password;
     this.#keyring.generateRandomMnemonic();
     const state: AccountState = {
-      keyringState: {
-        mnemonic: this.#keyring.mnemonic,
-        numberOfKeys: 0,
-      },
+      keyringState: { mnemonic: this.#keyring.mnemonic, numberOfKeys: 0 },
     };
-    const walletInfo = {
-      ...info,
-      ...{ state: state },
-    };
+    const walletInfo = { ...info, ...{ state: state } };
 
     this.info = walletInfo;
     return this.info;

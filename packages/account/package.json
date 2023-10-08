@@ -1,7 +1,7 @@
 {
   "name": "@peter-present/account",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "account abstraction",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -22,7 +22,7 @@
     "test:browser": "npx vitest run --config=./vitest.config.browser.ts --browser.name=chrome --browser.headless",
     "test:node": "npx vitest run",
     "test": "npm run test:node && npm run test:browser",
-    "prepublishOnly": "npm run clean && npm run build && npm run test"
+    "prepublishOnly": "npm run clean && npm run build && npm run test:node"
   },
   "repository": {
     "type": "git",
@@ -43,7 +43,7 @@
     "@ethereumjs/util": "8.0.6",
     "@noble/curves": "1.0.0",
     "@noble/hashes": "1.3.0",
-    "@peter-present/user-operation-type": "1.0.4",
+    "@peter-present/user-operation-type": "1.0.42",
     "@scure/bip32": "1.3.0",
     "@scure/bip39": "1.2.0",
     "ethers": "^6.6.1"
