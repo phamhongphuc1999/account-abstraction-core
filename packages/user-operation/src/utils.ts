@@ -12,7 +12,7 @@ import {
   isHexString,
   keccak256,
 } from 'ethers';
-import { AccountFactoryAbi } from './abis/account-factory';
+import { AccountFactoryAbi } from './abis/account-factory.js';
 
 export function packUserOp(op: UserOperationStruct, forSignature = true): string {
   if (forSignature) {

@@ -1,7 +1,7 @@
 {
   "name": "@peter-present/eth-query",
   "private": false,
-  "version": "1.0.1",
+  "version": "1.0.11",
   "description": "simple eth and account abstraction query",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -19,7 +19,10 @@
   "scripts": {
     "build": "../../config/scripts/ts-build.sh",
     "clean": "../../config/scripts/clear-package.sh",
-    "prepublishOnly": "npm run clean && npm run build"
+    "test:browser": "npx vitest run --config=./vitest.config.browser.ts --browser.name=chrome --browser.headless",
+    "test:node": "npx vitest run",
+    "test": "npm run test:node && npm run test:browser",
+    "prepublishOnly": "npm run clean && npm run build && npm run test:browser"
   },
   "repository": {
     "type": "git",

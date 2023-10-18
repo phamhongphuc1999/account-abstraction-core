@@ -11,8 +11,6 @@ import {
 } from '@peter-present/user-operation-type';
 import { JsonRpcMiddleware } from './json-rpc-middleware.js';
 
-const fetch = global.fetch;
-
 const RETRIABLE_ERRORS: string[] = [
   // ignore server overload errors
   'Gateway timeout',

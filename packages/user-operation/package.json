@@ -1,6 +1,6 @@
 {
   "name": "@peter-present/user-operation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "package for build user operation",
   "type": "module",
   "main": "dist/cjs/index.js",
