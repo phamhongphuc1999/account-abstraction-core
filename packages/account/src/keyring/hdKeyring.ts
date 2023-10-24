@@ -25,11 +25,8 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
   // | Uint8Array;
 
   #hdWallet: HDKey | undefined | null;
-
   #masterKey: HDKey | undefined | null;
-
   #derivedKeys: PrivateKey[];
-
   #decryptionKeys: PrivateKey[];
 
   constructor() {
@@ -52,10 +49,7 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
     try {
       const publicKeys: PublicKey[] = [];
       this.#derivedKeys.map((key: PrivateKey, index: number) => {
-        publicKeys[index] = {
-          key: getPublicKey(key, scheme),
-          scheme: scheme,
-        };
+        publicKeys[index] = { key: getPublicKey(key, scheme), scheme: scheme };
       });
       return Promise.resolve(publicKeys);
     } catch (e) {
@@ -68,10 +62,7 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
   }
 
   public async addKeys(numberOfKeys = 1): Promise<PrivateKey[]> {
-    if (!this.#masterKey) {
-      throw new Error(HDKeyringErrors.NoSRPProvided);
-    }
-
+    if (!this.#masterKey) throw new Error(HDKeyringErrors.NoSRPProvided);
     const oldLen = this.#derivedKeys.length;
     const newKeys: PrivateKey[] = [];
     for (let i = oldLen; i < numberOfKeys + oldLen; i++) {
@@ -80,7 +71,6 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
       newKeys.push(key);
       this.#derivedKeys.push(key);
     }
-
     return Promise.resolve(newKeys);
   }
 
@@ -89,10 +79,7 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
   }
 
   public async serialize(): Promise<SerializedHdKeyringState> {
-    if (!this.#mnemonic) {
-      throw new Error(HDKeyringErrors.MissingMnemonic);
-    }
-
+    if (!this.#mnemonic) throw new Error(HDKeyringErrors.MissingMnemonic);
     // const mnemonicAsString = this.#uint8ArrayToString(this.mnemonic);
     const uint8ArrayMnemonic = new TextEncoder().encode(this.#mnemonic);
 
@@ -108,17 +95,10 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
       throw new Error(HDKeyringErrors.DeserializeErrorNumberOfAccountWithMissingMnemonic);
     }
 
-    if (this.#masterKey) {
-      throw new Error(HDKeyringErrors.SRPAlreadyProvided);
-    }
-
+    if (this.#masterKey) throw new Error(HDKeyringErrors.SRPAlreadyProvided);
     const mnemonic = new TextDecoder().decode(new Uint8Array(state.mnemonic));
-
     this.#initFromMnemonic(mnemonic);
-
-    if (state.numberOfKeys) {
-      await this.addKeys(state.numberOfKeys);
-    }
+    if (state.numberOfKeys) await this.addKeys(state.numberOfKeys);
   }
 
   public async sign(message: Uint8Array, publicKey: PublicKey): Promise<Signature> {
@@ -165,22 +145,16 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
 
     // validate before initializing
     const isValid = bip39.validateMnemonic(this.#mnemonic, wordlist);
-    if (!isValid) {
-      throw new Error(HDKeyringErrors.InvalidSRP);
-    }
-
+    if (!isValid) throw new Error(HDKeyringErrors.InvalidSRP);
     // FIXME support other mnemonic type
     const seed = bip39.mnemonicToSeedSync(this.#mnemonic);
     this.#hdWallet = HDKey.fromMasterSeed(seed);
-    if (!this.hdPath) {
-      throw new Error(HDKeyringErrors.MissingHdPath);
-    }
+    if (!this.hdPath) throw new Error(HDKeyringErrors.MissingHdPath);
     this.#masterKey = this.#hdWallet.derive(this.hdPath);
   }
 
   #getPrivateKeyForPublicKey(publicKey: PublicKey): PrivateKey {
     if (publicKey.key.length < 33) throw new Error(HDKeyringErrors.PublicKeyNotProvided);
-
     const privKey =
       this.#derivedKeys.map((priv) => {
         const pub = getPublicKey(priv, publicKey.scheme);

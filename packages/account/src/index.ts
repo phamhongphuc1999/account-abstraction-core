@@ -27,7 +27,7 @@ import {
 } from 'ethers';
 import { AccountFactoryAbi } from './abis/account-factory.js';
 import { AccountAbi } from './abis/account.js';
-import { ADDRESSES, DEPLOY_SALTS_MVP } from './constants.js';
+import { NetworkConfig, DEPLOY_SALTS_MVP, SupportNetworks, NetworkObject } from './constants.js';
 import { AccountPackageErrors } from './errors.js';
 import { HDKeyring, Signatures } from './keyring/index.js';
 import { getEVMAddressFromPublicKey } from './utils.js';
@@ -35,32 +35,37 @@ import { getEVMAddressFromPublicKey } from './utils.js';
 export * from './constants.js';
 export * from './errors.js';
 export * from './keyring/index.js';
-export * from './kms/index.js';
 export * from './utils.js';
 
-// eslint-disable-next-line import/no-default-export
-export default class AccountPackage {
+interface InitialParams {
+  rpcUrl: string;
+  network?: SupportNetworks;
+  networkConfig?: NetworkObject;
+}
+
+export class AccountPackage {
   info!: WalletInfo;
-
   accounts!: Account[];
-
   #keyring!: HDKeyring;
-
   #password!: string;
-
+  config: NetworkObject;
   factoryContract!: Contract;
-
   entryPointContract!: Contract;
-
   provider: ethers.JsonRpcProvider;
 
-  constructor(rpcUrl: string) {
+  constructor(params: InitialParams) {
+    const { rpcUrl, network, networkConfig } = params;
+    this.config =
+      networkConfig ?? network
+        ? NetworkConfig[network as SupportNetworks]
+        : NetworkConfig['sepolia'];
+
     this.accounts = [];
-    // FIXME keyring ini
+
     this.#keyring = new HDKeyring();
     this.provider = new ethers.JsonRpcProvider(rpcUrl);
     this.factoryContract = new Contract(
-      ADDRESSES.sepolia.AccountFactory,
+      this.config.addresses.accountFactory,
       JSON.stringify(AccountFactoryAbi),
       this.provider,
     );
@@ -87,7 +92,6 @@ export default class AccountPackage {
       keyringState: { mnemonic: this.#keyring.mnemonic, numberOfKeys: 0 },
     };
     const walletInfo = { ...info, ...{ state: state } };
-
     this.info = walletInfo;
     return this.info;
   }
@@ -154,10 +158,7 @@ export default class AccountPackage {
    * @param options
    */
   public async addAccount(type: AccountType): Promise<Account> {
-    const account: Account = {
-      address: '',
-      type: type,
-    };
+    const account: Account = { address: '', type: type };
 
     switch (type) {
       case AccountType.EVM: {
@@ -233,7 +234,7 @@ export default class AccountPackage {
       owner,
       DEPLOY_SALTS_MVP.SIMPLE_ACCOUNT,
     ]);
-    return concat([ADDRESSES.sepolia.AccountFactory, encodeData]);
+    return concat([this.config.addresses.accountFactory, encodeData]);
   }
 
   public async getOwnerAddress(account: Account): Promise<string> {
@@ -264,7 +265,9 @@ export default class AccountPackage {
   public async signUserOp(userOp: UserOperationStruct, account: Account): Promise<BytesLike> {
     const publicKey = await this.getPublicKeyForAccount(account);
     // FIXME hard-coded network's data
-    const userOpHash = this.getUserOpHash(userOp, ADDRESSES.sepolia.EntryPoint, 11155111);
+    const entrypoint = this.config.addresses.entrypoint;
+    const chainId = this.config.chainId;
+    const userOpHash = this.getUserOpHash(userOp, entrypoint, chainId);
     const msg =
       Buffer.from('\x19Ethereum Signed Message:\n32').toString('hex') + userOpHash.slice(2);
     const sig = await this.#keyring.sign(getBytes('0x' + msg), publicKey);

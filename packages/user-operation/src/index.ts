@@ -29,9 +29,6 @@ export class UserOperation {
 
   private userOperationEth: UserOperationEth;
 
-  static accountFactoryAddress = '0x397559AEc4C800F5D1223431c818b83D585AD9ba';
-  static paymasterAddress = '0x61aB91d929119931d6C6bEd2F09586429DD90fd8';
-
   constructor(
     account: Account,
     callData: BytesLike,
