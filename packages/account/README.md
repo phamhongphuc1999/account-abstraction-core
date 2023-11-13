@@ -15,3 +15,12 @@ npm install @peter-present/account
 ```shell
 yarn add @peter-present/account
 ```
+
+## Usage
+
+```js
+const account = new AccountPackage({
+  rpcUrl: 'your-rpc',
+  networkConfig,
+});
+```

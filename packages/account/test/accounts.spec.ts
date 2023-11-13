@@ -9,11 +9,21 @@ import {
 } from '@peter-present/user-operation-type';
 import { toUtf8Bytes } from 'ethers';
 import { assert, describe, it } from 'vitest';
-import { AccountPackage } from '../src';
+import { AccountPackage, CHAIN_ALIASES } from '../src';
 import { Signatures } from '../src/keyring';
 
 describe('Account Package', async () => {
-  const ACCOUNT_PACKAGE = new AccountPackage({ rpcUrl: 'https://rpc.sepolia.org' });
+  const ACCOUNT_PACKAGE = new AccountPackage({
+    networkConfig: {
+      chainId: CHAIN_ALIASES.SEPOLIA,
+      addresses: {
+        entrypoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
+        accountFactory: '0x397559AEc4C800F5D1223431c818b83D585AD9ba',
+        paymaster: '0x61aB91d929119931d6C6bEd2F09586429DD90fd8',
+      },
+    },
+    rpcUrl: 'https://rpc.sepolia.org',
+  });
   const PASSWORD = 'Test@123';
   let walletInfo: WalletInfo = {
     strategy: WalletStrategy.SIMPLE,

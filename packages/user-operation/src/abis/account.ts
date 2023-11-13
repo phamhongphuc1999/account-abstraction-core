@@ -202,19 +202,6 @@ export const AccountAbi = [
   },
   {
     inputs: [],
-    name: 'guardianExecutor',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'guardianManager',
     outputs: [
       {
@@ -283,11 +270,6 @@ export const AccountAbi = [
       {
         internalType: 'address',
         name: '_guardianManager',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_guardianExecutor',
         type: 'address',
       },
     ],

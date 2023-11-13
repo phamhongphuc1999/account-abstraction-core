@@ -27,7 +27,7 @@ import {
 } from 'ethers';
 import { AccountFactoryAbi } from './abis/account-factory.js';
 import { AccountAbi } from './abis/account.js';
-import { NetworkConfig, DEPLOY_SALTS_MVP, SupportNetworks, NetworkObject } from './constants.js';
+import { DEPLOY_SALTS_MVP, NetworkObject } from './constants.js';
 import { AccountPackageErrors } from './errors.js';
 import { HDKeyring, Signatures } from './keyring/index.js';
 import { getEVMAddressFromPublicKey } from './utils.js';
@@ -39,8 +39,7 @@ export * from './utils.js';
 
 interface InitialParams {
   rpcUrl: string;
-  network?: SupportNetworks;
-  networkConfig?: NetworkObject;
+  networkConfig: NetworkObject;
 }
 
 export class AccountPackage {
@@ -54,11 +53,8 @@ export class AccountPackage {
   provider: ethers.JsonRpcProvider;
 
   constructor(params: InitialParams) {
-    const { rpcUrl, network, networkConfig } = params;
-    this.config =
-      networkConfig ?? network
-        ? NetworkConfig[network as SupportNetworks]
-        : NetworkConfig['sepolia'];
+    const { rpcUrl, networkConfig } = params;
+    this.config = networkConfig;
 
     this.accounts = [];
 

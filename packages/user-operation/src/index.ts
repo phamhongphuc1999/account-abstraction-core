@@ -8,7 +8,7 @@ export * from './estimate-gas-fee.js';
 export * from './estimate-operation-gas.js';
 export * from './user-operation-eth.js';
 
-type buildParamType = {
+type BuildParamType = {
   accountFactoryAddress?: string;
   paymasterAddress?: string;
   initCode?: string;
@@ -44,7 +44,7 @@ export class UserOperation {
     this.userOperationEth = new UserOperationEth(rpcUrl, chainId);
   }
 
-  async build(params?: buildParamType): Promise<UserOperationStruct> {
+  async build(entrypointAddress: string, params?: BuildParamType): Promise<UserOperationStruct> {
     const _paymasterAddress = params?.paymasterAddress ?? '0x';
 
     const accountContract = new Contract(
@@ -72,7 +72,7 @@ export class UserOperation {
     };
     const estimateGasData = await this.userOperationEth.estimateGas.estimateGas(
       estimatedUserOperation,
-      '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
+      entrypointAddress,
     );
     const estimateGasFee = await this.userOperationEth.estimateGasFee.estimateEIP1559Fee();
     return {
