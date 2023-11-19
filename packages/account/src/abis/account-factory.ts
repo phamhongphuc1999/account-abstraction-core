@@ -26,6 +26,24 @@ export const AccountFactoryAbi = [
   {
     inputs: [
       {
+        internalType: 'contract Account',
+        name: '_account',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'changeOwner',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'address',
         name: 'owner',
         type: 'address',
@@ -61,6 +79,25 @@ export const AccountFactoryAbi = [
       },
     ],
     name: 'getAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'owners',
     outputs: [
       {
         internalType: 'address',

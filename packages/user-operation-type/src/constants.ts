@@ -1,3 +1,5 @@
+export const ZERO_ACCOUNT = '0x0000000000000000000000000000000000000000';
+
 export const EthRequest = {
   getBlockByHash: 'eth_getBlockByHash',
   getBlockByNumber: 'eth_getBlockByNumber',

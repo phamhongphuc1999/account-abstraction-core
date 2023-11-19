@@ -3,6 +3,7 @@ import {
   EXECUTION_REVERTED,
   RpcError,
   UserOperationStruct,
+  ZERO_ACCOUNT,
 } from '@peter-present/user-operation-type';
 import BigNumber from 'bignumber.js';
 import { BigNumberish, Contract, Interface, ethers, getBytes, hexlify } from 'ethers';
@@ -20,7 +21,7 @@ export const DefaultGasOverheads = {
 };
 
 export const DefaultsForUserOp: UserOperationStruct = {
-  sender: '0x0000000000000000000000000000000000000000',
+  sender: ZERO_ACCOUNT,
   nonce: 0,
   initCode: '0x',
   callData: '0x',

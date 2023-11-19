@@ -1,6 +1,6 @@
 {
   "name": "@peter-present/user-operation",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "package for build user operation",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/phamhongphuc1999/account-abstraction-core#readme",
   "dependencies": {
-    "@peter-present/user-operation-type": "1.0.42",
+    "@peter-present/user-operation-type": "1.0.43",
     "bignumber.js": "^9.1.2",
     "ethers": "^6.6.1",
     "gas-price-oracle": "^0.5.2"
