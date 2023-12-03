@@ -371,7 +371,7 @@ export const EntryPointAbi = [
       {
         indexed: false,
         internalType: 'uint256',
-        name: 'unstakeDelaySec',
+        name: 'unstakeRelaySec',
         type: 'uint256',
       },
     ],
@@ -409,7 +409,7 @@ export const EntryPointAbi = [
       {
         indexed: false,
         internalType: 'address',
-        name: 'withdrawAddress',
+        name: 'withdrawnAddress',
         type: 'address',
       },
       {
@@ -514,7 +514,7 @@ export const EntryPointAbi = [
       {
         indexed: false,
         internalType: 'address',
-        name: 'withdrawAddress',
+        name: 'withdrawnAddress',
         type: 'address',
       },
       {
@@ -1238,6 +1238,5 @@ export const EntryPointAbi = [
   {
     stateMutability: 'payable',
     type: 'receive',
-    name: '',
   },
 ];

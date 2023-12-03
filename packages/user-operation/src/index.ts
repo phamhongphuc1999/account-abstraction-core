@@ -1,9 +1,7 @@
-import { Account, UserOperationStruct } from '@peter-present/user-operation-type';
+import { Account, AccountAbi, UserOperationStruct } from '@peter-present/user-operation-type';
 import { BigNumberish, BytesLike, Contract } from 'ethers';
-import { AccountAbi } from './abis/account.js';
 import { UserOperationEth } from './user-operation-eth.js';
 
-export * from './call-data.js';
 export * from './estimate-gas-fee.js';
 export * from './estimate-operation-gas.js';
 export * from './user-operation-eth.js';
@@ -19,7 +17,6 @@ export class UserOperation {
   callData: BytesLike;
   paymasterAndData: BytesLike;
   rpcUrl: string;
-  initCode: string;
 
   verificationGasLimit?: BigNumberish;
   preVerificationGas?: BigNumberish;
@@ -40,7 +37,6 @@ export class UserOperation {
     this.callData = callData;
     this.paymasterAndData = paymasterAndData;
     this.rpcUrl = rpcUrl;
-    this.initCode = '0x';
     this.userOperationEth = new UserOperationEth(rpcUrl, chainId);
   }
 
@@ -56,7 +52,6 @@ export class UserOperation {
     const isDeploy = await this.userOperationEth.provider.getCode(this.account.address);
     if (isDeploy != '0x') _nonce = parseInt(await accountContract.nonce());
     const _initCode = _nonce == 0 ? params?.initCode ?? '0x' : '0x';
-    this.initCode = _initCode;
     const estimatedUserOperation = {
       sender: this.account.address,
       nonce: _nonce,

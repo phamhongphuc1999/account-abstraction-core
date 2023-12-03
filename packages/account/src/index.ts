@@ -4,6 +4,8 @@
 import { toRpcSig } from '@ethereumjs/util';
 import {
   Account,
+  AccountAbi,
+  AccountFactoryAbi,
   AccountState,
   AccountType,
   PrivateKey,
@@ -25,8 +27,6 @@ import {
   keccak256,
   toUtf8Bytes,
 } from 'ethers';
-import { AccountFactoryAbi } from './abis/account-factory.js';
-import { AccountAbi } from './abis/account.js';
 import { DEPLOY_SALTS_MVP, NetworkObject } from './constants.js';
 import { AccountPackageErrors } from './errors.js';
 import { HDKeyring, Signatures } from './keyring/index.js';

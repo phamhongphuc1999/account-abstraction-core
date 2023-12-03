@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import { CallData } from './call-data.js';
 import { EstimateGasFee } from './estimate-gas-fee.js';
 import { EstimateOperationGas } from './estimate-operation-gas.js';
 
@@ -9,7 +8,6 @@ export class UserOperationEth {
 
   estimateGas: EstimateOperationGas;
   estimateGasFee: EstimateGasFee;
-  static callData = CallData;
 
   constructor(rpcUrl: string, chainId: string | number) {
     this.provider = new ethers.JsonRpcProvider(rpcUrl);

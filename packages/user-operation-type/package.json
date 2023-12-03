@@ -1,7 +1,7 @@
 {
   "name": "@peter-present/user-operation-type",
   "private": false,
-  "version": "1.0.43",
+  "version": "1.0.5",
   "description": "user operation type",
   "type": "module",
   "main": "dist/cjs/index.js",

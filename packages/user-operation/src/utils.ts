@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StakeInfo, UserOperationStruct } from '@peter-present/user-operation-type';
+import {
+  AccountFactoryAbi,
+  StakeInfo,
+  UserOperationStruct,
+} from '@peter-present/user-operation-type';
 import BigNumber from 'bignumber.js';
 import {
   AbiCoder,
@@ -12,7 +16,6 @@ import {
   isHexString,
   keccak256,
 } from 'ethers';
-import { AccountFactoryAbi } from './abis/account-factory.js';
 
 export function packUserOp(op: UserOperationStruct, forSignature = true): string {
   if (forSignature) {

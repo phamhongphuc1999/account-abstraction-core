@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   EXECUTION_REVERTED,
+  EntryPointAbi,
   RpcError,
   UserOperationStruct,
   ZERO_ACCOUNT,
 } from '@peter-present/user-operation-type';
 import BigNumber from 'bignumber.js';
 import { BigNumberish, Contract, Interface, ethers, getBytes, hexlify } from 'ethers';
-import { EntryPointAbi } from './abis/entry-point.js';
 import { callDataCost, fillEntity, hexDataSlice, packUserOp, toHex } from './utils.js';
 
 export const DefaultGasOverheads = {

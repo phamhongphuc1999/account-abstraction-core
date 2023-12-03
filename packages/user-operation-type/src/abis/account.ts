@@ -134,6 +134,94 @@ export const AccountAbi = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'bytes',
+        name: 'bytecode',
+        type: 'bytes',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'salt',
+        type: 'bytes32',
+      },
+    ],
+    name: 'computeAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'target',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'delegateExecute',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes',
+        name: 'bytecode',
+        type: 'bytes',
+      },
+      {
+        internalType: 'uint256',
+        name: '_salt',
+        type: 'uint256',
+      },
+    ],
+    name: 'deploy',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '_salt',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256',
+        name: '_delay',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_expirePeriod',
+        type: 'uint256',
+      },
+      {
+        internalType: 'contract AccountFactory',
+        name: '_accountFactory',
+        type: 'address',
+      },
+    ],
+    name: 'deployGuardian',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'entryPoint',
     outputs: [
@@ -227,6 +315,30 @@ export const AccountAbi = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'bytes',
+        name: 'bytecode',
+        type: 'bytes',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'salt',
+        type: 'bytes32',
+      },
+    ],
+    name: 'isDeploy',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'nonce',
     outputs: [
@@ -276,6 +388,30 @@ export const AccountAbi = [
     name: 'setUpGuardian',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'target',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'staticExecute',
+    outputs: [
+      {
+        internalType: 'bytes',
+        name: '',
+        type: 'bytes',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
