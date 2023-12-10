@@ -18,9 +18,23 @@ yarn add @peter-present/account
 
 ## Usage
 
+### Create your wallet
+
 ```js
-const account = new AccountPackage({
+const wallet = new Wallet({
   rpcUrl: 'your-rpc',
   networkConfig,
 });
+```
+
+### Create keyring
+
+```js
+walletInfo = await wallet.createKeyring(PASSWORD, walletInfo);
+```
+
+### Create a account
+
+```js
+const account = await wallet.addAccount(AccountType.EVM);
 ```

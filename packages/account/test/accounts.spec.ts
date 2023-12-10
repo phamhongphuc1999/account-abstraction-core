@@ -9,48 +9,39 @@ import {
 } from '@peter-present/user-operation-type';
 import { toUtf8Bytes } from 'ethers';
 import { assert, describe, it } from 'vitest';
-import { AccountPackage, CHAIN_ALIASES } from '../src';
+import { Wallet } from '../src';
 import { Signatures } from '../src/keyring';
 
 describe('Account Package', async () => {
-  const ACCOUNT_PACKAGE = new AccountPackage({
+  const wallet = new Wallet({
     networkConfig: {
-      chainId: CHAIN_ALIASES.SEPOLIA,
+      chainId: 97,
       addresses: {
         entrypoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-        accountFactory: '0x397559AEc4C800F5D1223431c818b83D585AD9ba',
-        paymaster: '0x61aB91d929119931d6C6bEd2F09586429DD90fd8',
+        accountFactory: '0x19385cB2E932E2fd40c39c21e7de5a49f53058fF',
+        paymaster: '0xEC695d0628e52848C4a3231E5719dFbd29983Bd7',
       },
     },
-    rpcUrl: 'https://rpc.sepolia.org',
+    rpcUrl: 'https://data-seed-prebsc-2-s2.binance.org:8545/',
   });
   const PASSWORD = 'Test@123';
   let walletInfo: WalletInfo = {
     strategy: WalletStrategy.SIMPLE,
     encrypted: false,
   };
-  // let mnemonic: string;
   let firstAccount: string;
 
   describe('Simple Wallet', () => {
     it('Create account', async () => {
-      walletInfo = await ACCOUNT_PACKAGE.createKeyring(PASSWORD, walletInfo);
-      const account = await ACCOUNT_PACKAGE.addAccount(AccountType.EVM);
-      const accounts = await ACCOUNT_PACKAGE.getAllAccounts();
+      walletInfo = await wallet.createKeyring(PASSWORD, walletInfo);
+      const account = await wallet.addAccount(AccountType.EVM);
+      const accounts = await wallet.getAllAccounts();
       assert.equal(accounts.length, 1);
       firstAccount = account.address;
 
-      const message = 'asdasdas';
-      const sig = await ACCOUNT_PACKAGE.signMessage(message, account);
-
-      assert.equal(
-        await Signatures.verify(
-          sig,
-          toUtf8Bytes(message),
-          await ACCOUNT_PACKAGE.getPublicKeyForAccount(account),
-        ),
-        true,
-      );
+      const message = 'abc@123';
+      const sig = await account.sign(new TextEncoder().encode(message));
+      assert.equal(await Signatures.verify(sig, toUtf8Bytes(message), account.publicKey), true);
 
       const mnemonic = new TextDecoder().decode(
         new Uint8Array(walletInfo.state!.keyringState.mnemonic),
@@ -59,31 +50,29 @@ describe('Account Package', async () => {
     });
 
     it('Delete accounts', async () => {
-      await ACCOUNT_PACKAGE.removeAllAccounts();
-      const accounts = await ACCOUNT_PACKAGE.getAllAccounts();
+      await wallet.removeAllAccounts();
+      const accounts = await wallet.getAllAccounts();
       assert.equal(accounts.length, 0);
     });
 
     it('Recover account', async () => {
-      await ACCOUNT_PACKAGE.restoreKeyring(PASSWORD, walletInfo);
-      const account = await ACCOUNT_PACKAGE.addAccount(AccountType.EVM);
-      const accounts = await ACCOUNT_PACKAGE.getAccounts(AccountType.EVM);
+      await wallet.restoreKeyring(PASSWORD, walletInfo);
+      const account = await wallet.addAccount(AccountType.EVM);
+      const accounts = await wallet.getAccounts(AccountType.EVM);
 
       assert.equal(accounts.length, 1);
       assert.equal(account.address, firstAccount);
     });
 
     it('Get init code', async () => {
-      const accounts = await ACCOUNT_PACKAGE.getAccounts(AccountType.EVM);
-      const initCode = await ACCOUNT_PACKAGE.getAccountInitCode(accounts[0]);
+      const accounts = await wallet.getAccounts(AccountType.EVM);
+      const initCode = await accounts[0].getInitCode();
       assert.isOk(initCode);
     });
 
     it('Sign userOp', async () => {
-      const accounts = await ACCOUNT_PACKAGE.getAccounts(AccountType.EVM);
+      const accounts = await wallet.getAccounts(AccountType.EVM);
       const account = accounts[0];
-      // const ownerAddress = await ACCOUNT_PACKAGE.getOwnerAddress(account);
-      // console.log('Owner', ownerAddress);
       const mockUserOp: UserOperationStruct = {
         sender: '0x' + '0'.repeat(40),
         nonce: 0,
@@ -97,10 +86,10 @@ describe('Account Package', async () => {
         paymasterAndData: '0x',
         signature: '0x',
       };
-      const userOpHash = await ACCOUNT_PACKAGE.getUserOpHash(
+      const userOpHash = await wallet.getUserOpHash(
         mockUserOp,
         '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-        11155111,
+        97,
       );
 
       const msg =
@@ -108,7 +97,7 @@ describe('Account Package', async () => {
       const msgHash = keccak_256(Buffer.from(msg));
       assert.isOk(msgHash);
 
-      const sig1 = await ACCOUNT_PACKAGE.signUserOp(mockUserOp, account);
+      const sig1 = await wallet.signUserOp(mockUserOp, account);
       const rawSig1 = fromRpcSig(sig1.toString());
       const customSig = {
         r: '0x' + rawSig1.r.toString('hex'),

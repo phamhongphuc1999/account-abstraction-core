@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { errorCodes, errorValues } from '../error.js';
 import { Json } from '../query.js';
 import { hasProperty, isPlainObject } from '../utils.js';
 import { EthereumRpcError, SerializedEthereumRpcError } from './classes.js';
-import { errorCodes, errorValues } from './errors-constant.js';
 import { ethErrors } from './errors.js';
 
 const FALLBACK_ERROR_CODE = errorCodes.rpc.internal;

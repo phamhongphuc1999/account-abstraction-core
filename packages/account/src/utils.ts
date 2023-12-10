@@ -7,5 +7,3 @@ import { publicToAddress, bufferToHex } from '@ethereumjs/util';
 export function getEVMAddressFromPublicKey(publicKey: Uint8Array): string {
   return bufferToHex(publicToAddress(Buffer.from(publicKey), true)).toLowerCase();
 }
-
-// export function getUserO

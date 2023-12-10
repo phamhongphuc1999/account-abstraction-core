@@ -1,4 +1,3 @@
-export * as Errors from './errors.js';
-export { HDKeyring } from './hdKeyring.js';
+export { HDKeyring } from './hd-keyring.js';
 export { Keyring } from './keyring.js';
 export * as Signatures from './signature.js';
