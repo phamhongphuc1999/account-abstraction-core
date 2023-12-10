@@ -108,7 +108,7 @@ export class Wallet {
     return account;
   }
 
-  public async removeAllAccounts(): Promise<void> {
+  public removeAllAccounts() {
     this.accounts = [];
     this.keyring = new HDKeyring();
   }
