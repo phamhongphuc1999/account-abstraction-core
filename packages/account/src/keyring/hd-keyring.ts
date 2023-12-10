@@ -21,7 +21,6 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
 
   hdPath: string = hdPathString;
   #mnemonic: string | undefined | null;
-
   #hdWallet: HDKey | undefined | null;
   #masterKey: HDKey | undefined | null;
   #derivedKeys: PrivateKey[];

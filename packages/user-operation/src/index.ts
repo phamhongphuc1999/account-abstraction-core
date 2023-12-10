@@ -1,4 +1,8 @@
-import { Account, AccountAbi, UserOperationStruct } from '@peter-present/user-operation-type';
+import {
+  AbstractionAccount,
+  AccountAbi,
+  UserOperationStruct,
+} from '@peter-present/user-operation-type';
 import { BigNumberish, BytesLike, Contract } from 'ethers';
 import { UserOperationEth } from './user-operation-eth.js';
 
@@ -9,11 +13,10 @@ export * from './user-operation-eth.js';
 type BuildParamType = {
   accountFactoryAddress?: string;
   paymasterAddress?: string;
-  initCode?: string;
 };
 
 export class UserOperation {
-  account: Account;
+  account: AbstractionAccount;
   callData: BytesLike;
   paymasterAndData: BytesLike;
   rpcUrl: string;
@@ -27,7 +30,7 @@ export class UserOperation {
   private userOperationEth: UserOperationEth;
 
   constructor(
-    account: Account,
+    account: AbstractionAccount,
     callData: BytesLike,
     paymasterAndData: BytesLike,
     rpcUrl: string,
@@ -49,9 +52,9 @@ export class UserOperation {
       this.userOperationEth.provider,
     );
     let _nonce = 0;
-    const isDeploy = await this.userOperationEth.provider.getCode(this.account.address);
-    if (isDeploy != '0x') _nonce = parseInt(await accountContract.nonce());
-    const _initCode = _nonce == 0 ? params?.initCode ?? '0x' : '0x';
+    const isDeploy = await this.account.isDeploy();
+    if (isDeploy) _nonce = parseInt(await accountContract.nonce());
+    const _initCode = _nonce == 0 ? this.account.getInitCode() ?? '0x' : '0x';
     const estimatedUserOperation = {
       sender: this.account.address,
       nonce: _nonce,

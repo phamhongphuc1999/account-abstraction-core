@@ -1,7 +1,7 @@
 {
   "name": "@peter-present/account",
   "private": false,
-  "version": "1.0.21",
+  "version": "1.0.3",
   "description": "account abstraction",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -43,7 +43,8 @@
     "@ethereumjs/util": "8.0.6",
     "@noble/curves": "1.0.0",
     "@noble/hashes": "1.3.0",
-    "@peter-present/user-operation-type": "1.0.5",
+    "@peter-present/account": "^1.0.21",
+    "@peter-present/user-operation-type": "1.0.52",
     "@scure/bip32": "1.3.0",
     "@scure/bip39": "1.2.0",
     "ethers": "^6.6.1"
