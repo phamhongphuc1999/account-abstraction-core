@@ -6,6 +6,11 @@ export enum WalletStrategy {
   WEB3 = 'Web3 External Wallet',
 }
 
+export type AccountState = {
+  keyringState: SerializedHdKeyringState;
+  accounts?: Account[];
+};
+
 export enum AccountType {
   EVM = 'EVM',
 }
@@ -19,9 +24,4 @@ export type WalletInfo = {
 export type Account = {
   address: string;
   type: AccountType;
-};
-
-export type AccountState = {
-  keyringState: SerializedHdKeyringState;
-  accounts?: Account[];
 };

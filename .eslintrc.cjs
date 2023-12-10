@@ -8,23 +8,13 @@ module.exports = {
   plugins: ['import', 'prettier', '@typescript-eslint'],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
   rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        endOfLine: 'auto',
-      },
-    ],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     quotes: ['error', 'single'],
     semi: ['warn', 'always'],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-unused-vars': [
       'warn',
-      {
-        vars: 'all',
-        varsIgnorePattern: '^_',
-        argsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-      },
+      { vars: 'all', varsIgnorePattern: '^_', argsIgnorePattern: '^_', ignoreRestSiblings: true },
     ],
     'import/first': 'error',
     'import/newline-after-import': 'error',
@@ -36,7 +26,6 @@ module.exports = {
     'import/no-deprecated': 'off',
     'import/no-duplicates': 'error',
     'import/no-dynamic-require': 'off',
-    // 'import/no-extraneous-dependencies': 'error',
     'import/no-mutable-exports': 'error',
     'import/no-namespace': 'off',
     'import/no-self-import': 'error',

@@ -1,6 +1,6 @@
+import { errorCodes } from '../error.js';
 import { Json } from '../query.js';
 import { EthereumProviderError, EthereumRpcError } from './classes.js';
-import { errorCodes } from './errors-constant.js';
 import { getMessageFromCode } from './utils.js';
 
 type EthereumErrorOptions<T extends Json> = {

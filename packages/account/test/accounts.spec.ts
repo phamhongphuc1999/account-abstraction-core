@@ -9,20 +9,20 @@ import {
 } from '@peter-present/user-operation-type';
 import { toUtf8Bytes } from 'ethers';
 import { assert, describe, it } from 'vitest';
-import { AccountPackage, CHAIN_ALIASES } from '../src';
+import { AccountPackage } from '../src';
 import { Signatures } from '../src/keyring';
 
 describe('Account Package', async () => {
   const ACCOUNT_PACKAGE = new AccountPackage({
     networkConfig: {
-      chainId: CHAIN_ALIASES.SEPOLIA,
+      chainId: 97,
       addresses: {
         entrypoint: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-        accountFactory: '0x397559AEc4C800F5D1223431c818b83D585AD9ba',
-        paymaster: '0x61aB91d929119931d6C6bEd2F09586429DD90fd8',
+        accountFactory: '0x19385cB2E932E2fd40c39c21e7de5a49f53058fF',
+        paymaster: '0xEC695d0628e52848C4a3231E5719dFbd29983Bd7',
       },
     },
-    rpcUrl: 'https://rpc.sepolia.org',
+    rpcUrl: 'https://data-seed-prebsc-2-s2.binance.org:8545/',
   });
   const PASSWORD = 'Test@123';
   let walletInfo: WalletInfo = {
@@ -82,8 +82,6 @@ describe('Account Package', async () => {
     it('Sign userOp', async () => {
       const accounts = await ACCOUNT_PACKAGE.getAccounts(AccountType.EVM);
       const account = accounts[0];
-      // const ownerAddress = await ACCOUNT_PACKAGE.getOwnerAddress(account);
-      // console.log('Owner', ownerAddress);
       const mockUserOp: UserOperationStruct = {
         sender: '0x' + '0'.repeat(40),
         nonce: 0,
@@ -100,7 +98,7 @@ describe('Account Package', async () => {
       const userOpHash = await ACCOUNT_PACKAGE.getUserOpHash(
         mockUserOp,
         '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-        11155111,
+        97,
       );
 
       const msg =

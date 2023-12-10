@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { toRpcSig } from '@ethereumjs/util';
 import {
   Account,
@@ -10,7 +7,6 @@ import {
   AccountType,
   PrivateKey,
   PublicKey,
-  SerializedHdKeyringState,
   Signature,
   SignatureScheme,
   UserOperationStruct,
@@ -67,20 +63,7 @@ export class AccountPackage {
     );
   }
 
-  /**
-   *  =================================
-   *  === Wallet Management Methods ===
-   *  =================================
-   */
-
-  /**
-   * Create a keyring for new wallet
-   *
-   * @param password
-   * @param info
-   */
   public async createKeyring(password: string, info: WalletInfo): Promise<WalletInfo> {
-    // FIXME validate password
     if (!password || !password.length) throw new Error(AccountPackageErrors.MissingPassword);
     this.#password = password;
     this.#keyring.generateRandomMnemonic();
@@ -92,17 +75,8 @@ export class AccountPackage {
     return this.info;
   }
 
-  /**
-   * Restore existing keyring of a wallet
-   *
-   * @param password
-   * @param info
-   */
-  public async restoreKeyring(password: string, info: WalletInfo): Promise<any> {
-    // FIXME validate password
-    if (!password || !password.length) {
-      throw new Error(AccountPackageErrors.MissingPassword);
-    }
+  public async restoreKeyring(password: string, info: WalletInfo) {
+    if (!password || !password.length) throw new Error(AccountPackageErrors.MissingPassword);
     if (!info.state) throw new Error(AccountPackageErrors.MissingAccountState);
     switch (info.strategy) {
       case WalletStrategy.SIMPLE: {
@@ -120,39 +94,6 @@ export class AccountPackage {
     this.info = info;
   }
 
-  /**
-   * Validate password for a client device
-   *
-   * @param password
-   */
-  public async validatePassword(password: string): Promise<any> {}
-
-  /**
-   * Unlock wallet and load secrets to memory
-   *
-   * @param password
-   */
-  public async unlockWallet(password: string, state: SerializedHdKeyringState): Promise<any> {}
-
-  /**
-   * Lock wallet and erase secrets from memory
-   */
-  public async lockWallet(): Promise<any> {
-    this.accounts = [];
-    this.#keyring = new HDKeyring();
-  }
-
-  /**
-   *  ==================================
-   *  === Account Management Methods ===
-   *  ==================================
-   */
-
-  /**
-   * Add a new account
-   *
-   * @param options
-   */
   public async addAccount(type: AccountType): Promise<Account> {
     const account: Account = { address: '', type: type };
 
@@ -174,36 +115,16 @@ export class AccountPackage {
       default:
         throw AccountPackageErrors.MissingAccountType;
     }
-
     if (account.address == '') throw AccountPackageErrors.MissingAddress;
     this.accounts.push(account);
     return account;
   }
 
-  /**
-   * Remove an account
-   *
-   * @param options
-   */
   public async removeAllAccounts(): Promise<void> {
     this.accounts = [];
     this.#keyring = new HDKeyring();
   }
 
-  /**
-   * Export the secret to control an account
-   *
-   * @param options
-   */
-  public async exportAccount(options: any[]): Promise<any> {}
-
-  public async rotateAccount(options: any[]): Promise<any> {}
-
-  /**
-   * Get all accounts
-   *
-   * @param options
-   */
   public async getAccounts(type: AccountType): Promise<Account[]> {
     return this.accounts.filter((acc) => acc.type == type);
   }
@@ -238,29 +159,15 @@ export class AccountPackage {
     return Promise.resolve(getEVMAddressFromPublicKey(pubKey.key));
   }
 
-  /**
-   *  ===================================
-   *  === Bundler Interaction Methods ===
-   *  ===================================
-   */
-
-  /**
-   * Sign arbitrary message
-   *
-   * @param options
-   */
   public async signMessage(message: BytesLike, account: Account): Promise<Signature> {
     if (!(message instanceof Uint8Array)) message = toUtf8Bytes(message);
     const publicKey = await this.getPublicKeyForAccount(account);
     return this.#keyring.sign(message, publicKey);
   }
 
-  /**
-   * Sign ERC4337 UserOp
-   */
   public async signUserOp(userOp: UserOperationStruct, account: Account): Promise<BytesLike> {
     const publicKey = await this.getPublicKeyForAccount(account);
-    // FIXME hard-coded network's data
+
     const entrypoint = this.config.addresses.entrypoint;
     const chainId = this.config.chainId;
     const userOpHash = this.getUserOpHash(userOp, entrypoint, chainId);
@@ -269,19 +176,6 @@ export class AccountPackage {
     const sig = await this.#keyring.sign(getBytes('0x' + msg), publicKey);
     return toRpcSig(sig.v || BigInt(0), sig.r, sig.s);
   }
-
-  // public async signPartialUserOp(
-  //   userOp: Partial<UserOperationStruct>,
-  //   account: Account
-  // ) : Promise<UserOperationStruct> {
-
-  // }
-
-  /**
-   *  ========================
-   *  === Internal Methods ===
-   *  ========================
-   */
 
   packUserOp(op: UserOperationStruct, forSignature = true): string {
     if (forSignature) {
@@ -394,12 +288,6 @@ export class AccountPackage {
     }
   }
 
-  /**
-   *  ===================
-   *  === Dev Methods ===
-   *  ===================
-   */
-
   public async getRecoveryData(): Promise<WalletInfo> {
     if (!this.info) throw Error(AccountPackageErrors.MissingInfo);
     return {
@@ -413,15 +301,5 @@ export class AccountPackage {
       },
       encrypted: false,
     };
-    // switch (this.info.strategy) {
-    //   case WalletStrategy.SIMPLE: {
-    //   }
-    //   case WalletStrategy.WEB2: {
-    //     break;
-    //   }
-    //   case WalletStrategy.WEB3: {
-    //     break;
-    //   }
-    // }
   }
 }
