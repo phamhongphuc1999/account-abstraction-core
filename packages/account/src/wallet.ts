@@ -114,7 +114,7 @@ export class Wallet {
   }
 
   public getAccounts(type: AccountType): AbstractionAccount[] {
-    return this.accounts.filter((acc) => acc.type == type);
+    return this.accounts.filter((account) => account.type == type);
   }
 
   public getAllAccounts(): AbstractionAccount[] {

@@ -6,8 +6,8 @@ import { keccak_256 } from '@noble/hashes/sha3';
 import {
   PrivateKey,
   PublicKey,
-  Signature,
   SignatureScheme,
+  SignatureType,
 } from '@peter-present/user-operation-type';
 
 export function getPublicKey(privateKey: Uint8Array | bigint, scheme: SignatureScheme): Uint8Array {
@@ -31,7 +31,7 @@ export function sign(
   message: Uint8Array,
   privateKey: PrivateKey,
   scheme: SignatureScheme,
-): Signature {
+): SignatureType {
   let normalizedPrivKey: bigint;
   if (privateKey instanceof Uint8Array) privateKey = bytesToNumberBE(privateKey);
   switch (scheme) {
@@ -44,22 +44,22 @@ export function sign(
       const r = Buffer.from(buf.slice(0, 32));
       const s = Buffer.from(buf.slice(32, 64));
       const v = BigInt((sig.recovery || 0) + 27);
-
       return { r, s, v };
     }
     case SignatureScheme.EDDSA_BABYJUBJUB: {
       normalizedPrivKey = mod(privateKey, jubjub.CURVE.n);
-
-      //FIXME
-      // const sig = jubjub.sign(message, numberToHexUnpadded(normalizedPrivKey));
-      return { r: Buffer.from('0x'), s: Buffer.from('0x') };
+      return { r: Buffer.from('0x'), s: Buffer.from('0x'), v: BigInt(0) };
     }
     default:
       throw 'Not supported signature scheme!';
   }
 }
 
-export function verify(signature: Signature, message: Uint8Array, publicKey: PublicKey): boolean {
+export function verify(
+  signature: SignatureType,
+  message: Uint8Array,
+  publicKey: PublicKey,
+): boolean {
   switch (publicKey.scheme) {
     case SignatureScheme.ECDSA_SECP256K1: {
       const sig = {

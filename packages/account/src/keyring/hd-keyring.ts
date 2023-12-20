@@ -2,8 +2,8 @@ import {
   PrivateKey,
   PublicKey,
   SerializedHdKeyringState,
-  Signature,
   SignatureScheme,
+  SignatureType,
 } from '@peter-present/user-operation-type';
 import { HDKey } from '@scure/bip32';
 import * as bip39 from '@scure/bip39';
@@ -91,13 +91,13 @@ export class HDKeyring implements Keyring<SerializedHdKeyringState> {
     if (state.numberOfKeys) await this.addKeys(state.numberOfKeys);
   }
 
-  public async sign(message: Uint8Array, publicKey: PublicKey): Promise<Signature> {
+  public async sign(message: Uint8Array, publicKey: PublicKey): Promise<SignatureType> {
     const privateKey = this.#getPrivateKeyForPublicKey(publicKey);
     return Promise.resolve(sign(message, privateKey, publicKey.scheme));
   }
 
   public async verify(
-    signature: Signature,
+    signature: SignatureType,
     message: Uint8Array,
     publicKey: PublicKey,
   ): Promise<boolean> {

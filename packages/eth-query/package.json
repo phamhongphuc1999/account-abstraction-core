@@ -1,7 +1,7 @@
 {
   "name": "@peter-present/eth-query",
   "private": false,
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "simple eth and account abstraction query",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -40,7 +40,6 @@
   },
   "homepage": "https://github.com/phamhongphuc1999/account-abstraction-core#readme",
   "dependencies": {
-    "@peter-present/account": "^1.0.21",
-    "@peter-present/user-operation-type": "1.0.52"
+    "@peter-present/user-operation-type": "1.0.53"
   }
 }

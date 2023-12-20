@@ -1,8 +1,8 @@
 import {
   PrivateKey,
   PublicKey,
-  Signature,
   SignatureScheme,
+  SignatureType,
 } from '@peter-present/user-operation-type';
 
 export abstract class Keyring<State> {
@@ -27,11 +27,11 @@ export abstract class Keyring<State> {
   abstract exportKeys?(indexes: number[]): Promise<PrivateKey[]>;
 
   // Sign arbitrary message
-  abstract sign(message: Uint8Array, publicKey: PublicKey): Promise<Signature>;
+  abstract sign(message: Uint8Array, publicKey: PublicKey): Promise<SignatureType>;
 
   // Verify signature
   abstract verify(
-    signature: Signature,
+    signature: SignatureType,
     message: Uint8Array,
     publicKey: PublicKey,
   ): Promise<boolean>;

@@ -1,4 +1,4 @@
-import { PrivateKey, PublicKey, SerializedHdKeyringState, Signature } from './keyring.js';
+import { PrivateKey, PublicKey, SerializedHdKeyringState } from './keyring.js';
 
 export enum WalletStrategy {
   SIMPLE = 'Simple Wallet',
@@ -34,7 +34,7 @@ export abstract class AbstractionAccount {
   abstract isDeploy(): Promise<boolean>;
   abstract getOwner(): string;
   abstract getInitCode(): string;
-  abstract sign(message: Uint8Array): Signature;
+  abstract sign(message: Uint8Array): string;
 }
 
 export type AccountState = {

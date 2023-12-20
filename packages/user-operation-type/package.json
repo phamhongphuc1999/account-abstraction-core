@@ -1,7 +1,7 @@
 {
   "name": "@peter-present/user-operation-type",
   "private": false,
-  "version": "1.0.52",
+  "version": "1.0.53",
   "description": "user operation type",
   "type": "module",
   "main": "dist/cjs/index.js",
@@ -72,7 +72,6 @@
   },
   "homepage": "https://github.com/phamhongphuc1999/account-abstraction-core#readme",
   "dependencies": {
-    "@peter-present/account": "^1.0.21",
     "ethers": "^6.6.1"
   }
 }

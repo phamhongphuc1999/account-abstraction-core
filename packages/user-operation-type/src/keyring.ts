@@ -3,10 +3,10 @@ export enum SignatureScheme {
   EDDSA_BABYJUBJUB = 'EDDSA Baby Jubjub',
 }
 
-export type Signature = {
+export type SignatureType = {
   r: Buffer;
   s: Buffer;
-  v?: bigint;
+  v: bigint;
 };
 
 export type PrivateKey = Uint8Array | bigint;
